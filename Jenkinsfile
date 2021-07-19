@@ -4,7 +4,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/akuzniatsou/spring-petclinic.git']]])
+                git url: 'https://github.com/akuzniatsou/spring-petclinic.git', branch: 'main'
                 
                 echo 'Build docker image'
                 script {
