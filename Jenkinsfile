@@ -7,7 +7,7 @@ pipeline {
                 git url: 'https://github.com/akuzniatsou/spring-petclinic.git', branch: 'main'
                 
                 echo 'Build docker image'
-                sh 'docker build --tag docker-in-docker-jenkins .'
+                sh 'docker build . -tag docker-jenkins'
             }
         }
     }
