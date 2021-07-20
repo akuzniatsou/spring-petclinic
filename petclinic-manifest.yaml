@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+        - name: petclinic
+          image: pet-clinic
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: http
+              path: "/actuator/health"
+          readinessProbe:
+            httpGet:
+              port: http
+              path: "/actuator/health"
+          volumeMounts:
+            - mountPath: "/application.properties"
+              subPath: "application.properties"
+              name: application-properties
+              readOnly: true
+      volumes:
+        - name: application-properties
+          configMap:
+            name: petclinic
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+spec:
+  selector:
+    app: petclinic
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: petclinic
+data:
+  application.properties: |
+    database=h2
+    spring.datasource.schema=classpath*:db/${database}/schema.sql
+    spring.datasource.data=classpath*:db/${database}/data.sql
+    spring.thymeleaf.mode=HTML
+    spring.jpa.hibernate.ddl-auto=none
+    spring.jpa.open-in-view=false
+    spring.messages.basename=messages/messages
+    management.endpoints.web.exposure.include=*
+    management.endpoint.health.show-details=always
+    logging.level.org.springframework=INFO
+    spring.resources.cache.cachecontrol.max-age=12h
