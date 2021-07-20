@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: pet-clinic
+          image: xsasx/petclinic:$PRODUCT_SERVICE_TAG
           imagePullPolicy: Never
           ports:
             - name: http
