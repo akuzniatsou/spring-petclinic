@@ -14,12 +14,20 @@ pipeline {
                 }
             }
         }
-
+		
+	stage('Push') {
+            steps {
+                script {
+                    withDockerRegistry([ credentialsId: "dockerCredentials", url: ""]) {
+                        dockerImage.push("${env.BUILD_ID}")
+                    }
+                }
+            }
+        }
 	
         stage('Publish') {
 	    steps {
                 script {
-                    env.PRODUCT_SERVICE_TAG = "${env.BUILD_ID}"
 		    kubernetesDeploy(configs: 'petclinic-manifest.yaml', kubeconfigId: 'kubeConfig')
                 }
             }
