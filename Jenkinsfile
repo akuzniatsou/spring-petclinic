@@ -9,7 +9,7 @@ pipeline {
                 
                 echo 'Build docker image'
                 script {
-                    dockerImage = docker.build("xsasx/test:$env.BUILD_ID")
+                    dockerImage = docker.build("petclinic:$env.BUILD_ID")
                 }
             }
         }
