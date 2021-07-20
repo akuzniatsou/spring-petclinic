@@ -14,16 +14,7 @@ pipeline {
                 }
             }
         }
-		
-	stage('Push') {
-            steps {
-                script {
-                    withDockerRegistry([ credentialsId: "dockerCredentials", url: ""]) {
-                        dockerImage.push("${env.BUILD_ID}")
-                    }
-                }
-            }
-        }
+
 	
         stage('Publish') {
 	    steps {
