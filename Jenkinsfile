@@ -23,7 +23,15 @@ pipeline {
                     }
                 }
             }
-
+        }
+	
+        stage('Publish') {
+	    steps {
+                script {
+                    env.PRODUCT_SERVICE_TAG = "${env.BUILD_ID}"
+		    kubernetesDeploy(configs: 'petclinic-manifest.yaml', kubeconfigId: 'cubeConfig')
+                }
+            }
         }
     }
 }
