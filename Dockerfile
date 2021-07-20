@@ -1,6 +1,6 @@
 FROM openjdk:11-jre
 
-COPY ../spring-petclinic/target/*.jar spring-petclinic.jar
+COPY target/*.jar spring-petclinic.jar
 
 RUN addgroup --system petclinic && adduser --system --group petclinic
 USER petclinic:petclinic
